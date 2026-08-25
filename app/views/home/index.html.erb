@@ -1,0 +1,75 @@
+<div class="container mt-5">
+
+  <!-- User information -->
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <h3 class="mb-0">
+        Logged in as:
+        <span class="text-primary"><%= current_user.email %></span>
+      </h3>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="card shadow mb-4">
+    <div class="card-body p-4">
+
+      <h4 class="mb-3">Search Users</h4>
+
+      <%= form_with url: home_index_path,
+            method: :get,
+            data: {
+              turbo_frame: "users",
+              controller: "validation",
+              action: "submit->validation#validate"
+            } do |form| %>
+
+        <div class="mb-3">
+          <%= form.label :search,
+                "Search Users by Name:",
+                class: "form-label" %>
+
+          <%= form.text_field :search,
+                value: params[:search],
+                class: "form-control",
+                placeholder: "Enter user name",
+                data: {
+                  validation_target: "input"
+                } %>
+
+          <p class="text-danger mt-2"
+             data-validation-target="error"></p>
+        </div>
+
+        <%= form.submit "Search",
+              class: "btn btn-primary" %>
+
+      <% end %>
+
+    </div>
+  </div>
+
+  <!-- Users -->
+  <div class="card shadow mb-4">
+    <div class="card-body p-4">
+
+      <h2 class="mb-4">Users</h2>
+
+      <%= turbo_frame_tag "users" do %>
+        <div id="users" class="list-group">
+          <%= render @users %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+
+  <!-- Logout -->
+  <div class="text-end">
+    <%= button_to "Logout",
+          destroy_user_session_path,
+          method: :delete,
+          class: "btn btn-danger" %>
+  </div>
+
+</div>

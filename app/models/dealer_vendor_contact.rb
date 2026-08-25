@@ -1,0 +1,2 @@
+class DealerVendorContact < ApplicationRecord
+end

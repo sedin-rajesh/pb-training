@@ -1,0 +1,15 @@
+<div id="user_<%= user.id %>"
+     class="list-group-item d-flex justify-content-between align-items-center">
+
+  <div>
+    <span class="fw-semibold"><%= user.name %></span>
+    <span class="text-muted">- <%= user.email %></span>
+  </div>
+
+  <%= button_to "Delete",
+        home_path(user),
+        method: :delete,
+        data: { turbo_confirm: "Are you sure?" },
+        class: "btn btn-danger btn-sm" %>
+
+</div>
