@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_25_122137) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_26_091126) do
+  create_table "dealer_to_vendors", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "dealer_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "vendor_contact_id", null: false
+    t.string "vendor_dealer_id"
+    t.integer "vendor_id", null: false
+    t.index ["dealer_id"], name: "index_dealer_to_vendors_on_dealer_id"
+    t.index ["vendor_contact_id"], name: "index_dealer_to_vendors_on_vendor_contact_id"
+    t.index ["vendor_id"], name: "index_dealer_to_vendors_on_vendor_id"
+  end
+
   create_table "dealer_vendor_contacts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name"
@@ -26,8 +38,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_122137) do
   create_table "permissions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "menu"
-    t.integer "role_id"
-    t.string "submenu"
+    t.string "sub_menu"
+    t.string "task"
     t.datetime "updated_at", null: false
   end
 
@@ -40,6 +52,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_122137) do
   create_table "roles_to_permissions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "permission_id"
+    t.integer "role_id"
     t.datetime "updated_at", null: false
   end
 
@@ -49,11 +62,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_122137) do
     t.string "encrypted_password", default: "", null: false
     t.string "firstname"
     t.string "lastname"
-    t.string "name"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
     t.datetime "updated_at", null: false
+    t.string "user_name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -62,6 +75,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_122137) do
     t.datetime "created_at", null: false
     t.string "name"
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_vendor_contacts_on_user_id"
   end
 
   create_table "vendors", force: :cascade do |t|
@@ -69,4 +84,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_122137) do
     t.string "name"
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "dealer_to_vendors", "dealers"
+  add_foreign_key "dealer_to_vendors", "vendor_contacts"
+  add_foreign_key "dealer_to_vendors", "vendors"
+  add_foreign_key "vendor_contacts", "users"
 end

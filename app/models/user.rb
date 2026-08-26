@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :roles
   has_one :vendor
   has_one :dealer
+  has_one :vendor_contact
   scope :search_by_name, ->(name) {
     name.present? ? where("name LIKE ?", "%#{sanitize_sql_like(name)}%") : all
   }

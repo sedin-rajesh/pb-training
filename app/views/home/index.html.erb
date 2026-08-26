@@ -1,16 +1,46 @@
-<div class="container mt-5">
+<div class="container-fluid my-0 border-0">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
 
-  <!-- User information -->
-  <div class="card shadow mb-4">
-    <div class="card-body">
-      <h3 class="mb-0">
-        Logged in as:
-        <span class="text-primary"><%= current_user.email %></span>
-      </h3>
+    <strong>
+      Logged in as: <%= current_user.user_name %>
+    </strong>
+
+    <div class="ms-auto">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+
+          <a class="nav-link dropdown-toggle"
+             href="#"
+             role="button"
+             data-bs-toggle="dropdown"
+             aria-expanded="false">
+            Account
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end">
+
+            <li>
+              <span class="dropdown-item">
+                Email: <%= current_user.email %>
+              </span>
+            </li>
+
+            <li class="p-2">
+              <%= button_to "Logout",
+                    destroy_user_session_path,
+                    method: :delete,
+                    class: "btn btn-danger w-100" %>
+            </li>
+
+          </ul>
+
+        </li>
+      </ul>
     </div>
-  </div>
 
-  <!-- Search -->
+  </nav>
+</div>  
+<div class="container mt-5">
   <div class="card shadow mb-4">
     <div class="card-body p-4">
 
@@ -51,25 +81,26 @@
 
   <!-- Users -->
   <div class="card shadow mb-4">
-    <div class="card-body p-4">
+  <div class="card-body p-4">
 
-      <h2 class="mb-4">Users</h2>
+    <h2 class="mb-4">Users</h2>
 
-      <%= turbo_frame_tag "users" do %>
-        <div id="users" class="list-group">
+    <%= turbo_frame_tag "users" do %>
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="users">
           <%= render @users %>
-        </div>
-      <% end %>
+        </tbody>
+      </table>
+    <% end %>
 
-    </div>
   </div>
-
-  <!-- Logout -->
-  <div class="text-end">
-    <%= button_to "Logout",
-          destroy_user_session_path,
-          method: :delete,
-          class: "btn btn-danger" %>
-  </div>
-
+</div>
 </div>
