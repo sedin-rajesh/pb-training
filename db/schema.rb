@@ -10,23 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_26_091126) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_28_111143) do
   create_table "dealer_to_vendors", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "dealer_id", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.integer "vendor_contact_id", null: false
     t.string "vendor_dealer_id"
     t.integer "vendor_id", null: false
     t.index ["dealer_id"], name: "index_dealer_to_vendors_on_dealer_id"
+    t.index ["user_id"], name: "index_dealer_to_vendors_on_user_id"
     t.index ["vendor_contact_id"], name: "index_dealer_to_vendors_on_vendor_contact_id"
     t.index ["vendor_id"], name: "index_dealer_to_vendors_on_vendor_id"
   end
 
   create_table "dealer_vendor_contacts", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.string "dealer_id"
     t.string "name"
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.string "vendor_id"
+    t.index ["user_id"], name: "index_dealer_vendor_contacts_on_user_id"
   end
 
   create_table "dealers", force: :cascade do |t|
@@ -67,8 +73,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_26_091126) do
     t.string "reset_password_token"
     t.datetime "updated_at", null: false
     t.string "user_name"
+    t.integer "vendor_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["vendor_id"], name: "index_users_on_vendor_id"
   end
 
   create_table "vendor_contacts", force: :cascade do |t|
@@ -86,7 +94,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_26_091126) do
   end
 
   add_foreign_key "dealer_to_vendors", "dealers"
+  add_foreign_key "dealer_to_vendors", "users"
   add_foreign_key "dealer_to_vendors", "vendor_contacts"
   add_foreign_key "dealer_to_vendors", "vendors"
+  add_foreign_key "dealer_vendor_contacts", "dealers"
+  add_foreign_key "dealer_vendor_contacts", "users"
+  add_foreign_key "dealer_vendor_contacts", "vendors"
+  add_foreign_key "users", "vendors"
   add_foreign_key "vendor_contacts", "users"
 end

@@ -5,10 +5,12 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :roles
-  has_one :vendor
   has_one :dealer
-  has_one :vendor_contact
+  has_one :vendor_contact, dependent: :destroy
+  has_many :dealer_to_vendors, through: :vendor_contact, dependent: :destroy
+  belongs_to :vendor
+  has_many :dealer_vendor_contacts, dependent: :destroy
   scope :search_by_name, ->(name) {
-    name.present? ? where("name LIKE ?", "%#{sanitize_sql_like(name)}%") : all
+    name.present? ? where("user_name LIKE ?", "%#{sanitize_sql_like(name)}%") : all
   }
 end

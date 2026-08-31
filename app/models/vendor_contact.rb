@@ -1,4 +1,5 @@
 class VendorContact < ApplicationRecord
   belongs_to :user
   has_many :dealer_to_vendors
+  has_many :vendors, through: :dealer_to_vendors
 end
